@@ -12,6 +12,16 @@ extension SwiftAstro {
     
 }
 
+extension SwiftAstro.Time {
+    
+    // calculate Greenwich Sidereal Time (GST) in degrees
+    public func greenwichSiderealTime() -> Double {
+        let T = (julianDays - 2451545.0) / 36525.0
+        let GST = 280.46061837 + 360.98564736629 * (julianDays - 2451545.0) + T * T * (0.000387933 - T / 38710000.0)
+        return GST.truncatingRemainder(dividingBy: 360.0) // Normalize to 0-360 degrees
+    }
+}
+
 // MARK: - Constants
 
 extension SwiftAstro.Time {

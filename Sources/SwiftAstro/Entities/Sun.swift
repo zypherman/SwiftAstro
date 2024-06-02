@@ -77,4 +77,17 @@ extension SwiftAstro.Sun {
         return SwiftAstro.Angle(arcSeconds: arcSeconds)
     }
 
+    /// Calculate the subsolar point on Earth where the sun is at the zenith
+    public func subsolarPoint(t: SwiftAstro.Time) -> (latitude: Double, longitude: Double) {
+        let (ra, decl) = self.geocentricPosition(t: t)
+        let gst = t.greenwichSiderealTime()
+        
+        let raDegrees = ra.degrees
+        let longitude = (raDegrees - gst).truncatingRemainder(dividingBy: 360)
+        let adjustedLongitude = (longitude + 180).truncatingRemainder(dividingBy: 360) - 180
+        
+        let latitude = decl.degrees
+        
+        return (latitude: latitude, longitude: adjustedLongitude)
+    }
 }
